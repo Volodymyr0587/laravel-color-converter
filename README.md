@@ -22,7 +22,7 @@ Ensure you have the following installed on your system:
 1. Clone the repository:
    ```bash
    git clone https://github.com/Volodymyr0587/laravel-color-converter.git
-   cd color-converter
+   cd laravel-color-converter
    ```
 
 2. Install dependencies:
