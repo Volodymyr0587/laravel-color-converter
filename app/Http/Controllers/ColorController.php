@@ -25,7 +25,9 @@ class ColorController extends Controller
         ];
 
         return redirect()->route('color-converter')->with('result', [
-            'type' => 'rgb',
+            'from' => 'hex',
+            'to' => 'rgb',
+            'input' => "#{$hex}",
             'value' => "rgb({$rgb['r']}, {$rgb['g']}, {$rgb['b']})",
             'color' => "rgb({$rgb['r']}, {$rgb['g']}, {$rgb['b']})",
         ]);
@@ -45,8 +47,12 @@ class ColorController extends Controller
 
         $hex = sprintf("#%02x%02x%02x", $validated['r'], $validated['g'], $validated['b']);
 
+        $inputRgb = "rgb({$validated['r']}, {$validated['g']}, {$validated['b']})";
+
         return redirect()->route('color-converter')->with('result', [
-            'type' => 'hex',
+            'from' => 'rgb',
+            'to' => 'hex',
+            'input' => $inputRgb,
             'value' => $hex,
             'color' => $hex,
         ]);

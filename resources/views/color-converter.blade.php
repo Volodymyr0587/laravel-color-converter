@@ -11,33 +11,48 @@
 
     <body class="bg-gray-100 min-h-screen flex items-center justify-center">
         <div class="bg-white p-8 rounded shadow-md max-w-lg w-full">
-            <h1 class="text-2xl font-bold text-center mb-6 bg-gradient-to-r from-blue-600 via-green-500 to-indigo-400 text-transparent bg-clip-text">
+            <h1
+                class="text-2xl font-bold text-center mb-6 bg-gradient-to-r from-blue-600 via-green-500 to-indigo-400 text-transparent bg-clip-text">
                 Hex to RGB & RGB to Hex Converter
             </h1>
 
             @if(session('error'))
-            <div class="bg-red-100 text-red-800 p-4 rounded mb-6">
-                {{ session('error') }}
-            </div>
+                <div class="bg-red-100 text-red-800 p-4 rounded mb-6">
+                    {{ session('error') }}
+                </div>
             @endif
 
             @if (session('result'))
-            @php $result = session('result'); @endphp
-            <div class="mb-6">
-                <p class="text-lg font-medium">
-                    Result: <span class="font-bold">{{ strtoupper($result['type']) }}</span>
-                </p>
-                <div class="flex items-center gap-4 mt-4">
-                    <!-- Use the color from the result for background-color -->
-                    <div class="w-16 h-16 rounded-full" style="background-color: {{ $result['color'] }};"></div>
-                    <span id="color-result" class="text-lg font-mono">{{ $result['value'] }}</span>
-                    <!-- Copy to Clipboard Button -->
-                    <button id="copy-button" class="px-2 py-2 ml-2 text-white bg-gray-600 hover:bg-gray-700 rounded-lg"
-                        onclick="copyToClipboard()">
-                        Copy to Clipboard
-                    </button>
+                @php $result = session('result'); @endphp
+                <div class="mb-6">
+                    <p class="text-lg font-medium">
+                        Conversion:
+                        <span class="font-bold uppercase">
+                            {{ $result['from'] }}
+                            to
+                            {{ $result['to'] }}
+                        </span>
+                    </p>
+
+                    <div class="flex flex-col gap-1 mt-2 font-mono">
+                        <span class="text-gray-500">From:</span>
+                        <span>{{ $result['input'] }}</span>
+
+                        <span class="text-gray-500">To:</span>
+                        <span>{{ $result['value'] }}</span>
+                    </div>
+                    <div class="flex items-center gap-4 mt-4">
+                        <!-- Use the color from the result for background-color -->
+                        <div id="color-preview" class="w-16 h-16 rounded-full transition-all duration-500 ease-in-out"
+                            style="background-color: {{ $result['color'] }};"></div>
+                        <span id="color-result" class="text-lg font-mono">{{ $result['value'] }}</span>
+                        <!-- Copy to Clipboard Button -->
+                        <button id="copy-button" class="px-2 py-2 ml-2 text-white bg-gray-600 hover:bg-gray-700 rounded-lg"
+                            onclick="copyToClipboard()">
+                            Copy to Clipboard
+                        </button>
+                    </div>
                 </div>
-            </div>
             @endif
 
 
@@ -62,7 +77,7 @@
                         <input type="number" id="r" name="r" min="0" max="255"
                             class="mt-1 p-4 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" />
                         @error('r')
-                        <span class="text-xs text-red-500">{{ $message }}</span>
+                            <span class="text-xs text-red-500">{{ $message }}</span>
                         @enderror
                     </div>
                     <div>
@@ -70,7 +85,7 @@
                         <input type="number" id="g" name="g" min="0" max="255"
                             class="mt-1 p-4 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" />
                         @error('g')
-                        <span class="text-xs text-red-500">{{ $message }}</span>
+                            <span class="text-xs text-red-500">{{ $message }}</span>
                         @enderror
                     </div>
                     <div>
@@ -78,7 +93,7 @@
                         <input type="number" id="b" name="b" min="0" max="255"
                             class="mt-1 p-4 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" />
                         @error('b')
-                        <span class="text-xs text-red-500">{{ $message }}</span>
+                            <span class="text-xs text-red-500">{{ $message }}</span>
                         @enderror
                     </div>
                 </div>
@@ -100,6 +115,19 @@
                     console.error('Failed to copy text: ', err);
                 });
             }
+
+            document.addEventListener('DOMContentLoaded', () => {
+                const el = document.getElementById('color-preview');
+
+                if (el) {
+                    el.classList.add('scale-75', 'opacity-0');
+
+                    setTimeout(() => {
+                        el.classList.remove('scale-75', 'opacity-0');
+                        el.classList.add('scale-100', 'opacity-100');
+                    }, 200);
+                }
+            });
         </script>
     </body>
 
